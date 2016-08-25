@@ -10,7 +10,7 @@ angular.module('angular-input-stars', [])
             '</ul>',
             require: 'ngModel',
             scope: {
-                ngModel: '='
+                ngModel: '=',
             },
             link: link
         };
@@ -24,6 +24,9 @@ angular.module('angular-input-stars', [])
                 },
                 get fullIcon() {
                     return attrs.iconFull || 'fa-star';
+                },
+                get halfIcon() {
+                    return attrs.iconHalc || 'fa-star-half-o';
                 },
                 get emptyIcon() {
                     return attrs.iconEmpty || 'fa-star-o';
@@ -44,7 +47,14 @@ angular.module('angular-input-stars', [])
             };
 
             scope.getClass = function (index) {
-                var icon = index >= scope.lastValue ? computed.iconBase + ' ' + computed.emptyIcon : computed.iconBase + ' ' + computed.fullIcon + ' active ';
+                var icon;
+                if (scope.lastValue >= index + 0.9) {
+                  icon = computed.iconBase + ' ' + computed.fullIcon + ' active ';
+                } else if (scope.lastValue >= index + 0.4 ) {
+                  icon = computed.iconBase + ' ' + computed.halfIcon + ' active ';
+                } else {
+                  icon = computed.iconBase + ' ' + computed.emptyIcon;
+                }
                 return computed.readonly ? icon + ' readonly' : icon;
             };
 
